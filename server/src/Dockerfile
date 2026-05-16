@@ -7,7 +7,7 @@ COPY ["server/src/API/Server.API.csproj", "server/src/API/"]
 COPY ["server/src/Application/Server.Application.csproj", "server/src/Application/"]
 COPY ["server/src/Domain/Server.Domain.csproj", "server/src/Domain/"]
 COPY ["server/src/Infrastructure/Server.Infrastructure.csproj", "server/src/Infrastructure/"]
-COPY ["server/src/Shared/Server.Shared.csproj", "server/src/Shared/"]
+COPY ["server/src/Shared/Shared.csproj", "server/src/Shared/"]
 
 RUN dotnet restore "server/src/API/Server.API.csproj"
 
