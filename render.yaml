@@ -4,16 +4,14 @@ services:
     env: docker
     plan: free
     region: ohio
-    rootDir: server/src
-    buildFilter:
-      paths:
-        - ./**
-    # Docker context is the root
+    # Context must be the root to see all folders
     dockerContext: .
-    dockerfilePath: ./Dockerfile
+    # Path to the Dockerfile relative to the root
+    dockerfilePath: ./server/src/Dockerfile
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
       - key: Jwt__Key
         value: 8Fh3KpL9sQ2wX7zA5vM1tR6yU8bC4nD0E9GkJpLq
       - key: ConnectionStrings__DefaultConnection
+        value: ""
