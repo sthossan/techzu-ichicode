@@ -4,10 +4,8 @@ services:
     env: docker
     plan: free
     region: ohio
-    # Context must be the root to see all folders
     dockerContext: .
-    # Path to the Dockerfile relative to the root
-    dockerfilePath: ./server/src/Dockerfile
+    dockerfilePath: server/src/Dockerfile
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
