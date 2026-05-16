@@ -4,7 +4,7 @@ services:
     env: docker
     plan: free
     region: ohio
-    dockerfilePath: server/src/Dockerfile
+    rootDir: server
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
