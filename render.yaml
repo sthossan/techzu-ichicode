@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: techzu-api
+    env: docker
+    plan: free
+    region: ohio
+    # Docker context is the root
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Jwt__Key
+        value: 8Fh3KpL9sQ2wX7zA5vM1tR6yU8bC4nD0E9GkJpLq
+      - key: ConnectionStrings__DefaultConnection
+        value: "" # Empty value triggers the In-Memory DB logic we added

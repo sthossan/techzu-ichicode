@@ -1,0 +1,60 @@
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Sponsorship Requests</h2>
+        <button class="btn btn-primary" routerLink="/sponsorship/new">
+            <i class="bi bi-plus-lg me-2"></i>New Request
+        </button>
+    </div>
+
+    <div class="card shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 py-3 text-secondary small text-uppercase">Reference</th>
+                        <th class="py-3 text-secondary small text-uppercase">Event Name</th>
+                        <th class="py-3 text-secondary small text-uppercase">Requested Amount</th>
+                        <th class="py-3 text-secondary small text-uppercase">Status</th>
+                        <th class="py-3 text-secondary small text-uppercase">Created At</th>
+                        <th class="pe-4 py-3 text-secondary small text-uppercase text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let req of requests$ | async">
+                        <td class="ps-4">
+                            <span class="fw-medium text-primary">#{{ req.id.substring(0, 8) }}</span>
+                        </td>
+                        <td>
+                            <div class="fw-semibold">{{ req.eventName }}</div>
+                        </td>
+                        <td>
+                            <span class="fw-bold text-dark">{{ req.requestedAmount | currency:'USD':'symbol':'1.2-2' }}</span>
+                        </td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2" [ngClass]="getStatusClass(req.status)">
+                                {{ req.status }}
+                            </span>
+                        </td>
+                        <td class="text-secondary small">
+                            {{ req.createdAt | date:'mediumDate' }}
+                        </td>
+                        <td class="pe-4 text-end">
+                            <a *ngIf="req.documentUrl" [routerLink]="['/preview']" [queryParams]="{ file: getFileName(req.documentUrl) }" target="_blank" class="btn btn-outline-info btn-sm rounded-3 me-2">
+                                <i class="bi bi-file-earmark-text"></i> {{ getFileName(req.documentUrl) }}
+                            </a>
+                            <button class="btn btn-outline-primary btn-sm rounded-3 me-2" [routerLink]="['/sponsorship', req.id]">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!(requests$ | async)?.length">
+                        <td colspan="6" class="text-center py-5 text-secondary">
+                            <i class="bi bi-inbox fs-1 d-block mb-2 opacity-25"></i>
+                            No requests found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
