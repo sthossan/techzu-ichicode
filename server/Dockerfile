@@ -1,28 +1,28 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 
-# Copy csproj files and restore as distinct layers
-COPY Server.sln ./
-COPY API/Server.API.csproj ./API/
-COPY Domain/Server.Domain.csproj ./Domain/
-COPY Application/Server.Application.csproj ./Application/
-COPY Infrastructure/Server.Infrastructure.csproj ./Infrastructure/
-COPY Shared/Shared.csproj ./Shared/
+# Copy files relative to the root context (.)
+COPY ["server/Server.sln", "server/"]
+COPY ["server/API/Server.API.csproj", "server/API/"]
+COPY ["server/Application/Server.Application.csproj", "server/Application/"]
+COPY ["server/Domain/Server.Domain.csproj", "server/Domain/"]
+COPY ["server/Infrastructure/Server.Infrastructure.csproj", "server/Infrastructure/"]
+COPY ["server/Shared/Shared.csproj", "server/Shared/"]
 
-RUN dotnet restore
+RUN dotnet restore "server/Server.sln"
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish API/Server.API.csproj -c Release -o out
+# Copy everything and build
+COPY . .
+WORKDIR "/src/server/API"
+RUN dotnet publish "Server.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Final Stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=build /app/publish .
 
-# Render assigns a dynamic port via the PORT env var
-# ASP.NET Core 8+ uses ASPNETCORE_HTTP_PORTS
+# Render dynamic port
 ENV ASPNETCORE_HTTP_PORTS=8080
 
 ENTRYPOINT ["dotnet", "Server.API.dll"]
